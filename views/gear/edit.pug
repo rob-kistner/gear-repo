@@ -1,0 +1,44 @@
+extends ../layouts/main.pug
+
+block body
+
+  section
+
+    form(action=`/gear/${gearItem.id}?_method=PUT`, method='post')
+      input(type='hidden', name='_method', value='PUT')
+
+      .row.justify-content-center
+
+        .col-md-8
+
+          h3.my-4 Edit Gear Item
+
+          .form-group
+            label(for='category') Category
+            input.form-control(type='text', name='category', value=`${gearItem.category}`)
+
+          .form-group
+            label(for='manufacturer') Manufacturer
+            input.form-control(type='text', name='manufacturer', value=`${gearItem.manufacturer}`)
+
+          .form-group
+            label(for='description') Description
+            input.form-control(type='text', name='description', value=`${gearItem.description}`)
+
+          .row
+            .form-group.col-6
+              label(for='purchasePrice') Purchase Price
+              .input-group
+                .input-group-prepend
+                  .input-group-text $
+                input.form-control(type='text', name='purchasePrice', value=`${gearItem.purchase_price}`)
+            .form-group.col-6
+              label(for='sellPrice') Sell Price
+              .input-group
+                .input-group-prepend
+                  .input-group-text $
+                input.form-control(type='text', name='sellPrice', value=`${gearItem.sell_price}`)
+
+      .row.justify-content-center.my-4
+        .col-8
+          button.btn.btn-primary.btn-block(type='submit') Update Item

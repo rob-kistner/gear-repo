@@ -1,11 +1,3 @@
-// login into respective database for
-// deployment on mLab/Heroku or local
-if (process.env.NODE_ENV === 'production') {
-  module.exports = {
-    mongoURI : 'mongodb://vidjot-admin:Passw0rd!@ds151943.mlab.com:51943/vidjot-prod'
-  }
-} else {
-  module.exports = {
-    mongoURI : 'mongodb://localhost/vidjot-dev'
-  }
+module.exports = {
+  mongoURI : 'mongodb://gearrepodb:rH6eW8Pkgf4@ds151382.mlab.com:51382/gear-repo'
 }

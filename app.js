@@ -3,21 +3,11 @@
 ------------------------------------------*/
 const express = require('express')
 const path = require('path')
-// handlebars templating
 const exphbs = require('express-handlebars')
-// allows for use of request methods like
-// PUT and DELETE
 const methodOverride = require('method-override')
-// connect-flash for flash messaging when
-// something happens to a video idea
 const flash = require('connect-flash')
-
 const session = require('express-session')
-
-// parses form data
 const bodyParser = require('body-parser')
-
-// passport
 const passport = require('passport')
 
 // mLab or local deployment database
@@ -35,7 +25,7 @@ const mongoose = require('mongoose')
 const app = express()
 
 // load routes
-const ideas = require('./routes/ideas')
+const gear = require('./routes/gear')
 const users = require('./routes/users')
 
 // passport config
@@ -43,24 +33,14 @@ require('./config/passport')(passport)
 
 // globals
 const port = process.env.PORT || 5000
-// const mongoUrl = 'mongodb://localhost/vidjot-dev'
-// const mongoUrlMlab = 'mongodb://vidjot-admin:Passw0rd!@ds151943.mlab.com:51943/vidjot-prod'
-
-// Map global promise - get rid of mongoose warning
-// This is NOT required for mongoose v5+
-mongoose.Promise = global.Promise
 
 /* -----------------------------------------
   MongoDB
 ------------------------------------------*/
 
-// Connect using Mongoose
-// reference config/database.js for
-// database location
+// Connect to mongodb
 mongoose
-  .connect(db.mongoURI, {
-    useMongoClient : true
-  })
+  .connect(db.mongoURI, { useNewUrlParser: true })
   .then(() => console.log(`MongoDB connected at ${db.mongoURI}`))
   .catch((err) => console.log(err))
 
@@ -69,14 +49,14 @@ mongoose
 ------------------------------------------*/
 
 // Handlebars template engine
-// will use 'views/layouts/main.handlebars' as default layout
-app.engine(
-  'handlebars',
-  exphbs({
-    defaultLayout : 'main'
-  })
-)
-app.set('view engine', 'handlebars')
+// app.engine(
+//   'handlebars',
+//   exphbs({
+//     defaultLayout : 'main'
+//   })
+// )
+// app.set('view engine', 'handlebars')
+app.set('view engine', 'pug')
 
 // BodyParser for POST requests
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -99,8 +79,8 @@ app.use(
 
 // passport session middleware
 // Note: MUST APPEAR AFTER THE EXPRESS SESSION!
-app.use(passport.initialize())
-app.use(passport.session())
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 // connect-flash
 app.use(flash())
@@ -113,7 +93,7 @@ app.use(function(req, res, next) {
   res.locals.error_msg = req.flash('error_msg')
   res.locals.error = req.flash('error')
   // if logged in...
-  res.locals.user = req.user || null
+  // res.locals.user = req.user || null
   next()
 })
 
@@ -123,8 +103,7 @@ app.use(function(req, res, next) {
 
 // Home
 app.get('/', (req, res) => {
-  const title = 'Welcome'
-  res.render('index', { title: title })
+  res.render('index')
 })
 
 // About
@@ -132,10 +111,9 @@ app.get('/about', (req, res) => {
   res.render('about')
 })
 
-// use routes for any route starting
-// with /ideas
-app.use('/ideas', ideas)
-app.use('/users', users)
+// init routes
+app.use('/gear', gear)
+// app.use('/users', users)
 
 /* -----------------------------------------
   MAIN

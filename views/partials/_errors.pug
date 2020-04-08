@@ -1,0 +1,8 @@
+// Passport error message
+if error_msg != ''
+  .alert.alert-danger #{error}
+
+// custom error message(s)
+if error_msg != ''
+  each err in errors
+    .alert.alert-danger #{err.text}

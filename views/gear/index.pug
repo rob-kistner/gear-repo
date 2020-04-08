@@ -1,0 +1,21 @@
+extends ../layouts/main.pug
+
+block body
+
+  if gearItems
+    each gearItem in gearItems
+      .card.card-body.mb-3
+        .row
+          .col-lg-10.col-md-9.col-sm-8
+            p #{gearItem.category}
+            h5 #{gearItem.manufacturer}
+            h4 #{gearItem.description}
+          .col-lg-2.col-md-3.col-sm-4
+            a.btn.btn-warning.btn-lg.p-3(href=`/gear/edit/${gearItem.id}`)
+              i.fa.fa-pencil
+            form.d-inline(action=`/gear/${gearItem.id}?_method=DELETE`, method='post')
+              input(type='hidden', name='_method', value='DELETE')
+              button.btn.btn-light.btn-lg.p-3(type='submit')
+                i.fa.fa-trash
+  else
+    p No gear has been added.
